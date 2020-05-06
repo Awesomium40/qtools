@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: qsf
+Version: 0.2.0
+Summary: A small module for translating QSF survey exports from Qualtrics into excel data dictionaries
+Home-page: https://github.com/JayWaWa/qsf
+Author: Jay Walthers
+Author-email: justin_walthers@brown.edu
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

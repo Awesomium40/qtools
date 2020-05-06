@@ -1,3 +1,0 @@
-openpyxl>=2.6.3
-python-docx>=0.8.10
-lxml>=4.3.3

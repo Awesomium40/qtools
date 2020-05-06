@@ -1,1 +1,4 @@
 venv/
+qsf/build/
+qsf/dist/
+qsf/qsf.egg-info/

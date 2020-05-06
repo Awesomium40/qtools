@@ -1,4 +1,4 @@
-from qsf import decoder
+from . import decoder
 from .survey import _Survey
 from .questions import *
 import json
@@ -10,8 +10,8 @@ __all__ = ["MatrixQuestion", "MultiChoiceQuestion", "RankOrderQuestion", "SideBy
 
 def Survey(path):
     """
-    Survey(path) -> qsf.survey._Survey
-    Factory method for creating a Survey object from a qualtrics .qsf export
+    Survey(path) -> qsf2.survey._Survey
+    Factory method for creating a Survey object from a qualtrics .qsf2 export
     :param path: path to the QSF file for the survey
     :return: Survey object
     """

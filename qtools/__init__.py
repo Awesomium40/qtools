@@ -1,5 +1,5 @@
 from .constants import Format, TimeZones
 from .exportclient import ExportClient
-from .exceptions import ExportException
+from .exceptions import ExportException, JsonException
 
-__all__ = ['ExportClient', 'ExportException', 'Format', 'TimeZones']
+__all__ = ['ExportClient', 'ExportException', 'Format', 'JsonException', 'TimeZones']

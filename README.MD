@@ -76,7 +76,8 @@ surveys = ec.export_responses(out_path, survey_id, file_format, report_progress=
 <p><i>export_responses</i> accepts the following arguments:</p>
 <ul>
     <li><i>out_path</i>: The path at which exported responses should be saved</li>
-    <li><i>survey_id</i>: The qualtrics ID of the survey whose responses are to be exported</li>
+    <li><i>survey_id</i>: The qualtrics ID of the survey whose responses are to be exported. Omitting this argument will cause
+    a prompt to choose between available surveys as listed retrieved from the Qualtrics List Surveys API</li>
     <li><i>file_format</i>: Specifies the file format to be downloaded. Accepts the following values from the <b>constants</b> module:<br>
     Format.CSV,<br>
     Format.JSON,<br>

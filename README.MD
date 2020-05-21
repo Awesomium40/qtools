@@ -25,8 +25,7 @@
 <p>The <b>ExportClient</b> class allows interaction with (as of 0.1.0) the Qualtrics List Surveys and Get Survey APIs 
 to download and retrieve Survey response data. </p>
 <p>To use the ExportClient class:</p>
-<code>
-import qtools
+<code>import qtools<br>
 export_client = qtools.ExportClient(data_center, token)
 </code>
 <p>data_center and token are optional arguments which specify your Qualtrics data center and API token, respectively.
@@ -45,8 +44,7 @@ If omitted, ExportClient will attempt the following during initialization:</p>
 <p>The preferred usage is to create the OS environment variables <i>Q_DATA_CENTER</i> and
 <i>Q_API_TOKEN</i> and populate them with your data center and API token, 
 then call the parameterless constructor:</p>
-<code>
-import qtools
+<code>import qtools<br>
 ec = qtools.ExportClient()
 </code>
 

@@ -25,9 +25,11 @@
 <p>The <b>ExportClient</b> class allows interaction with (as of 0.1.0) the Qualtrics List Surveys and Get Survey APIs 
 to download and retrieve Survey response data. </p>
 <p>To use the ExportClient class:</p>
-<code>import qtools<br>
-export_client = qtools.ExportClient(data_center, token)
-</code>
+
+```python
+import qtools
+ec = qtools.ExportClient()
+```
 <p>data_center and token are optional arguments which specify your Qualtrics data center and API token, respectively.
 If omitted, ExportClient will attempt the following during initialization:</p>
 <ol>
@@ -44,25 +46,33 @@ If omitted, ExportClient will attempt the following during initialization:</p>
 <p>The preferred usage is to create the OS environment variables <i>Q_DATA_CENTER</i> and
 <i>Q_API_TOKEN</i> and populate them with your data center and API token, 
 then call the parameterless constructor:</p>
-<code>import qtools<br>
+
+```python
+import qtools
 ec = qtools.ExportClient()
-</code>
+```
+
 
 <h3>Retrieving a list of your surveys with the ExportClient class</h3>
 <p>Surveys owned by a user are retrieved with the <i>get_survey_list</i> method, 
 which will return a dictionary mapping survey ID to survey name</p>
-<code><br>import qtools<br/>
-ec = qtools.ExportClient()<br>
+
+```python
+import qtools
+ec = qtools.ExportClient()
 surveys = ec.get_survey_list()
-</code>
+```
 
 <h3>Exporting survey response data with the ExportClient class</h3>
 <p>Response data can be downloaded via the <i>export_responses</i> method:</p>
-<code><br>import qtools<br/>
-ec = qtools.ExportClient()<br>
+
+```python
+import qtools
+ec = qtools.ExportClient()
 surveys = ec.export_responses(out_path, survey_id, file_format, report_progress=True,
                               update_every=0.5, **kwargs)
-</code>
+```
+
 <p><i>export_responses</i> accepts the following arguments:</p>
 <ul>
     <li><i>out_path</i>: The path at which exported responses should be saved</li>

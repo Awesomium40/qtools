@@ -28,9 +28,9 @@ to download and retrieve Survey response data. </p>
 
 ```python
 import qtools
-ec = qtools.ExportClient()
+ec = qtools.ExportClient(data_center, token)
 ```
-<p>data_center and token are optional arguments which specify your Qualtrics data center and API token, respectively.
+<p><i>data_center</i> and <i>token</i> are optional arguments which specify your Qualtrics data center and API token, respectively.
 If omitted, ExportClient will attempt the following during initialization:</p>
 <ol>
     <li>Attempt to find and use the OS environment variables <i>Q_DATA_CENTER</i> and <i>Q_API_TOKEN</i> 
@@ -51,6 +51,14 @@ then call the parameterless constructor:</p>
 import qtools
 ec = qtools.ExportClient()
 ```
+
+<p>For instructions of locating your data center and API tokens, see <a href="https://api.qualtrics.com/docs/finding-qualtrics-ids">https://api.qualtrics.com/docs/finding-qualtrics-ids</a></p>
+<p>for instructions regarding environmental variables, see:</p>
+<ul>
+    <li>windows: <a href="https://docs.oracle.com/en/database/oracle/r-enterprise/1.5.1/oread/creating-and-modifying-environment-variables-on-windows.html">Oracle.com</a></li>
+    <li>linux: <a href="https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-environment-variables-in-linux/">serverlab.ca</a></li>
+    <li>mac: <a href="https://medium.com/@himanshuagarwal1395/setting-up-environment-variables-in-macos-sierra-f5978369b255">Himanshu Aggarwal's blog</a></li>
+</ul>
 
 
 <h3>Retrieving a list of your surveys with the ExportClient class</h3>

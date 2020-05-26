@@ -8,6 +8,7 @@ class Format(abc.StringEnum):
     SPSS = 'spss'
     TSV = 'tsv'
     XML = 'xml'
+    TXT = 'text'
 
     def __str__(self):
         return self.value

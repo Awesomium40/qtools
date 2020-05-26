@@ -1,6 +1,7 @@
 from . import constants
 from . import utils
 from . import exceptions
+from . import qsf
 import datetime
 import getpass
 import io
@@ -65,7 +66,7 @@ class ExportClient(object):
         }
 
         self._url_base = f'https://{self._data_center}' + \
-            f".qualtrics.com/API/v3/surveys"
+            f".qualtrics.com/API/v3/"
 
     @staticmethod
     def _await_export_(url, headers, report_progress=True, update_every=0.5):
@@ -149,6 +150,16 @@ class ExportClient(object):
 
         return body
 
+    def _locate_survey_id_(self, survey_id, locator):
+
+        locator = self._prompt_for_survey_ if locator is None or not callable(locator) else locator
+        survey_id = locator() if survey_id is None else survey_id
+
+        if survey_id is None:
+            raise ValueError("Must specify valid value for either survey_id or locator")
+
+        return survey_id
+
     def _prompt_for_survey_(self):
 
         try_again = True
@@ -184,15 +195,6 @@ class ExportClient(object):
 
         return survey_id
 
-    def export_survey_codebook(self, survey_id):
-        """
-        ec.export_survey_codebook(survey_id) -> openpyxl.Workbook
-        exports data from qualtrics GetSurvey API and returns an excel workbook containing the data
-        :param survey_id: the qualtrics ID of the survey to be exported
-        :return:
-        """
-        raise NotImplementedError()
-
     def get_survey_list(self):
         """
         ec.list_surveys() -> dict[str: str]
@@ -200,7 +202,7 @@ class ExportClient(object):
         whose keys are survey ID and whose values are survey names
         :return: dict
         """
-        url = self._url_base
+        url = f'{self._url_base}surveys'
         headers = {'x-api-token': self._token,
                    "content-type": "multipart/form-data"}
         response = requests.get(url, headers=headers)
@@ -210,6 +212,21 @@ class ExportClient(object):
 
         data = response.json()['result']['elements']
         return {itm.get('id'): itm.get('name') for itm in data}
+
+    def export_codebook(self, survey_id=None, locator=None):
+        """
+        ec.export_codebook(out_path, survey_id=None, **kwargs)
+        Exports a codebook to
+        :param survey_id:
+        :param locator: keyword argument providing a callable which returns the ID of the survey to be exported.
+        :return: openpyxl.Workbook
+        """
+
+        survey_id = self._locate_survey_id_(survey_id=survey_id, locator=locator)
+
+        data = self.export_survey_definition(survey_id=survey_id, locator=locator, format=constants.Format.TXT)
+        survey = qsf.Survey(data)
+        return survey.codebook()
 
     def export_responses(self, out_path, survey_id=None, file_format=constants.Format.SPSS, report_progress=True,
                          update_every=0.5, **kwargs):
@@ -222,6 +239,8 @@ class ExportClient(object):
         :param file_format: constants.Format specifying the file format for the result export
         :param report_progress: Whether to display the progress of the export. Default True
         :param update_every: How often to check progress of export (in seconds). Default 0.5
+        :param locator: Callable which returns the survey ID of the survey whose responses are to be exported
+        if survey_id is not specified. Optional.
         :param startDate: DateTime or ISO-8601 datetime string in UTC time.
         Only export responses recorded after this date. Optional. Omit to export all responses
         :param endDate: DateTime or ISO-8601 datetime string. Only export responses recorded prior to this date.
@@ -248,14 +267,17 @@ class ExportClient(object):
         :return: None
         """
 
-        # If no survey specified, present user with a prompt that allows to choose from available surveys to export
-        survey_id = self._prompt_for_survey_() if survey_id is None else survey_id
+        # If no survey specified, either use the provided callable to retrieve survey ID
+        # or present user with a prompt that allows to choose from available surveys to export
+        locator = kwargs.get('locator', self._prompt_for_survey_)
+        survey_id = self._locate_survey_id_(survey_id=survey_id, locator=locator)
 
         if survey_id is None:
             logging.info("No survey ID specified. Aborting...")
+            return
 
         body = {"format": f"{file_format}"}
-        base_url = f'{self._url_base}/{survey_id}/export-responses/'
+        base_url = f'{self._url_base}surveys/{survey_id}/export-responses/'
         headers = self._headers
         headers['x-api-token'] = self._token
         body_args = self._create_cre_body_(**kwargs)
@@ -282,5 +304,28 @@ class ExportClient(object):
         download = requests.get(dl_url, headers=headers, stream=True)
 
         zipfile.ZipFile(io.BytesIO(download.content)).extractall(out_path)
+
+    def export_survey_definition(self, survey_id=None, locator=None, format=constants.Format.JSON):
+        """
+        ec.export_survey_definition(survey_id=None, locator=None, format=constants.Format.JSON) -> object
+        Exports the survey definition (qsf) associated with the survey specified by survey_id or located by locator
+        :param survey_id: The ID of the survey whose definition is to be exported
+        :param locator: Callable which returns the ID of the survey to be exported when survey_id is None
+        :param format: constants.Format that specifies output type. Format.JSON or Format.TXT
+        :return: text or JSON data, as specified by format
+        """
+        locator = self._prompt_for_survey_ if locator is None or not callable(locator) else locator
+        survey_id = locator() if survey_id is None else survey_id
+
+        url = f'{self._url_base}survey-definitions/{survey_id}?format=qsf'
+        headers = {'x-api-token': self._token}
+
+        response = requests.get(url, headers=headers)
+
+        if not response.ok:
+            raise exceptions.ExportException(f"Unable to export definition for survey {survey_id}. " +
+                                             "Check result for details", response.reason)
+
+        return response.json() if format == constants.Format.JSON else response.text
 
 

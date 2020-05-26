@@ -63,3 +63,10 @@ class TestExportClient(unittest.TestCase):
         survey_id = ec._prompt_for_survey_()
         print(survey_id)
 
+    def test_export_codebook(self):
+        ec = ExportClient()
+
+        data = ec.export_codebook(survey_id='SV_6llqAsI32tDsPSl')
+        data.save('export.xlsx')
+        d = 25
+

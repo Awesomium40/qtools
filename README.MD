@@ -10,7 +10,10 @@
 </ul>
 
 <a id="requirements"><h2>Requirements</h2></a>
-<p>qtools requires python 3.6 or greater and as of version 0.1.0, has no other dependencies</p>
+<p>qtools requires python 3.6 or greater. Currently, it has the following dependencies:</p>
+<ul>
+<li><a href="https://openpyxl.readthedocs.io/en/stable/">openpyxl >= 2.6.3</a></li>
+</ul>
 
 
 <a id="installation"><h2>Installation</h2></a>
@@ -84,8 +87,9 @@ surveys = ec.export_responses(out_path, survey_id, file_format, report_progress=
 <p><i>export_responses</i> accepts the following arguments:</p>
 <ul>
     <li><i>out_path</i>: The path at which exported responses should be saved</li>
-    <li><i>survey_id</i>: The qualtrics ID of the survey whose responses are to be exported. Omitting this argument will cause
-    a prompt to choose between available surveys as listed retrieved from the Qualtrics List Surveys API</li>
+    <li><i>survey_id</i>: The qualtrics ID of the survey whose responses are to be exported.</li>
+    <li><i>locator</i>: A callable which returns the ID of the survey to be exported if survey_id is not specified.
+    Note that failure to specify both survey_id and locator will cause a prompt for users to input a survey ID</li>
     <li><i>file_format</i>: Specifies the file format to be downloaded. Accepts the following values from the <b>constants</b> module:<br>
     Format.CSV,<br>
     Format.JSON,<br>
@@ -95,9 +99,42 @@ surveys = ec.export_responses(out_path, survey_id, file_format, report_progress=
     Format.XML<br></li>
     <li><i>report_progress</i>: Specifies whether to report the progress of the export download. Default True</li>
     <li><i>update_every</i>: Specifies how often (in seconds) to check the progress of export downloads. Default 0.5</li>
+    <li><i>survey_locator</i>: Callable which returns a survey ID if survey_id is not specified. Optional</li>
 </ul>
 
 <p>export_responses also accepts a variety of keyword arguments as allowed by the Export API 
 (see  the 'Body Params' section of the 
 <a href="https://api.qualtrics.com/reference#create-response-export-new">Create Response Export API</a> 
 for more details on these)</p>
+
+<h3>Exporting Survey Definitions and Data Dictionaries/Codebooks</h3>
+<p>Survey definition data and codebooks can be downloaded with the  <i>export_survey_definition</i> and <i>export_codebook</i> methods, respectively:</p>
+
+```python
+from qtools import *
+
+ec = ExportClient
+survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSON)
+```
+
+<p>The <i>export_survey_definition</i> method accepts the following arguments:</p>
+<ul>
+    <li><i>survey_id</i>: The ID of the survey whose definition is to be exported</li>
+    <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
+    <li><i>format</i>: The format of the data. Format.JSON for JSON data or format.TXT for text. Default Format.JSON</li>
+</ul>
+<p><i>export_survey_definition</i>returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
+
+```python
+from qtools import *
+ec = ExportClient()
+codebook = ec.export_codebook(survey_id='surveyID')  # type: openpyxl.Workbook
+codebook.save("path_to_save")
+```
+
+<p>The <i>export_codebook</i> method accepts the following arguments:</p>
+<ul>
+    <li><i>survey_id</i>: The ID of the survey whose definition is to be exported</li>
+    <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
+</ul>
+<p><i>export_codebook</i> returns an openpyxl.Workbook object</p>

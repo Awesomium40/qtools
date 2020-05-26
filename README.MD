@@ -25,7 +25,7 @@
 
 <a id="usage"><h2>Usage</h2></a>
 <h3>Using the ExportClient class:</h3>
-<p>The <b>ExportClient</b> class allows interaction with (as of 0.1.0) the Qualtrics List Surveys and Get Survey APIs 
+<p>The <b>ExportClient</b> class allows interaction with (as of 0.5.0) the Qualtrics List Surveys and Get Survey APIs 
 to download and retrieve Survey response data. </p>
 <p>To use the ExportClient class:</p>
 

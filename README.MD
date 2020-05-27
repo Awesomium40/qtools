@@ -20,7 +20,7 @@
 <p>qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>
 <code>&lt;path_to_qtools_folder&gt;/setup.py install</code>
 
-<p>Alternatively, you can download the latest precompiled wheel from the <b>dist</b> folder (currently version 0.1.0) and install via pip</p>
+<p>Alternatively, you can download the latest precompiled wheel from the <b>dist</b> folder (currently version 0.5.0) and install via pip</p>
 <code>python -m pip install &lt;path_to_wheel&gt;</code>
 
 <a id="usage"><h2>Usage</h2></a>
@@ -78,10 +78,10 @@ surveys = ec.get_survey_list()
 <p>Response data can be downloaded via the <i>export_responses</i> method:</p>
 
 ```python
-import qtools
-ec = qtools.ExportClient()
-surveys = ec.export_responses(out_path, survey_id, file_format, report_progress=True,
-                              update_every=0.5, **kwargs)
+from qtools import *
+ec = ExportClient()
+ec.export_responses(out_path="path_to_survey", survey_id="qualtrics_id", file_format=Format.SPSS, 
+                    report_progress=True, update_every=0.5, **kwargs)
 ```
 
 <p><i>export_responses</i> accepts the following arguments:</p>
@@ -123,7 +123,7 @@ survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSO
     <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
     <li><i>format</i>: The format of the data. Format.JSON for JSON data or format.TXT for text. Default Format.JSON</li>
 </ul>
-<p><i>export_survey_definition</i>returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
+<p><i>export_survey_definition</i> returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
 
 ```python
 from qtools import *
@@ -137,4 +137,4 @@ codebook.save("path_to_save")
     <li><i>survey_id</i>: The ID of the survey whose definition is to be exported</li>
     <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
 </ul>
-<p><i>export_codebook</i> returns an openpyxl.Workbook object</p>
+<p><i>export_codebook</i> returns an <a href="https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html">openpyxl.Workbook</a> object</p>

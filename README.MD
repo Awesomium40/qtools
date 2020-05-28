@@ -31,10 +31,11 @@ to download and retrieve Survey response data. </p>
 
 ```python
 import qtools
-ec = qtools.ExportClient(data_center, token)
+ec = qtools.ExportClient(data_center='your_data_center', token='your_api_token')
 ```
-<p><i>data_center</i> and <i>token</i> are optional arguments which specify your Qualtrics data center and API token, respectively.
-If omitted, ExportClient will attempt the following during initialization:</p>
+<p><i>data_center</i> and <i>token</i> are optional arguments which specify your Qualtrics data center and API token, respectively.</p>
+<p>These variables can either specify the data center and API tokens directly, or point to OS environment variables which hold the appropriate values</p>
+<p>If omitted, ExportClient will attempt the following during initialization:</p>
 <ol>
     <li>Attempt to find and use the OS environment variables <i>Q_DATA_CENTER</i> and <i>Q_API_TOKEN</i> 
     for the data_center and token parameters, respectively</li>
@@ -51,8 +52,8 @@ If omitted, ExportClient will attempt the following during initialization:</p>
 then call the parameterless constructor:</p>
 
 ```python
-import qtools
-ec = qtools.ExportClient()
+from qtools import *
+ec = ExportClient()
 ```
 
 <p>For instructions of locating your data center and API tokens, see <a href="https://api.qualtrics.com/docs/finding-qualtrics-ids">https://api.qualtrics.com/docs/finding-qualtrics-ids</a></p>
@@ -80,7 +81,7 @@ surveys = ec.get_survey_list()
 ```python
 from qtools import *
 ec = ExportClient()
-ec.export_responses(out_path="path_to_survey", survey_id="qualtrics_id", file_format=Format.SPSS, 
+ec.export_responses(out_path="path_to_save", survey_id="qualtrics_id", file_format=Format.SPSS, 
                     report_progress=True, update_every=0.5, **kwargs)
 ```
 

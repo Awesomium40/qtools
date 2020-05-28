@@ -12,10 +12,10 @@ import requests
 import time
 import zipfile
 
-PASSPHRASE_SIZE = 64  # 512-bit passphrase
+
 _QDC = 'Q_DATA_CENTER'
 _QAT = 'Q_API_TOKEN'
-_RP = 'RAND_PASS'
+
 
 logging.getLogger('exportclient').addHandler(logging.NullHandler())
 
@@ -42,8 +42,6 @@ class ExportClient(object):
         ERR_BASE = ("parameter '{0}' was not specified and variable '{1}' was " +
                     "not found in environment variables. Please specify {0} or add {1} " +
                     "to your OS environment variables.")
-
-        self._pass = os.urandom(PASSPHRASE_SIZE)
 
         dc = os.environ.get(data_center) if data_center is not None and os.environ.get(data_center) is not None else \
             data_center if data_center is not None else os.environ.get(_QDC) if os.environ.get(_QDC) is not None else \
@@ -150,10 +148,16 @@ class ExportClient(object):
 
         return body
 
-    def _locate_survey_id_(self, survey_id, locator):
-
+    def _locate_survey_id_(self, locator=None):
+        """
+        ec._locate_survey_id(locator) -> str
+        returns either the survey ID located by the callable locator
+        or by the default of ExportClient._prompt_for_survey_ if locator is not specified
+        :param locator: callable which returns a valid qualtrics survey ID
+        :return:
+        """
         locator = self._prompt_for_survey_ if locator is None or not callable(locator) else locator
-        survey_id = locator() if survey_id is None else survey_id
+        survey_id = locator()
 
         if survey_id is None:
             raise ValueError("Must specify valid value for either survey_id or locator")
@@ -164,7 +168,7 @@ class ExportClient(object):
 
         try_again = True
         survey_id = None
-        surveys = self.list_surveys()
+        surveys = self.get_survey_list()
         survey_list = {i: survey_data for i, survey_data in enumerate(surveys.items(), 1)}
 
         prompt = ("Surveys:\n" +
@@ -270,7 +274,7 @@ class ExportClient(object):
         # If no survey specified, either use the provided callable to retrieve survey ID
         # or present user with a prompt that allows to choose from available surveys to export
         locator = kwargs.get('locator', self._prompt_for_survey_)
-        survey_id = self._locate_survey_id_(survey_id=survey_id, locator=locator)
+        survey_id = self._locate_survey_id_(locator=locator) if survey_id is None else survey_id
 
         if survey_id is None:
             logging.info("No survey ID specified. Aborting...")

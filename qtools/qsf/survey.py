@@ -1,13 +1,12 @@
 from openpyxl.cell.cell import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
-from .abc import SurveyObjectBase, SurveyQuestion
+from .abc import SurveyObjectBase
 from .questions import *
 import openpyxl
 
 
 class _Survey(SurveyObjectBase):
-    #COL_HEADERS = ['QuestionID', 'QuestionType', 'Selector', 'SubSelector', 'QuestionStem', 'QuestionLeaf',
-    #               'Variable Name', 'Variable Label', 'Value Labels', 'Validation']
+
     COL_HEADERS = ["QuestionID", 'Variable Name', "Variable Label", "Value Labels"]
     WIDTHS = {"A": 10.3, "B": 21.5, "C": 44.3, "D": 27.9}
     ALIGNMENTS = {"A": openpyxl.styles.Alignment(),
@@ -28,7 +27,23 @@ class _Survey(SurveyObjectBase):
     def __init__(self, items, **kwargs):
         super().__init__(items, **kwargs)
 
-    def __xl__codebook(self, var_info_only=True):
+    def get_question(self, question_id):
+        """
+        s.get_question(question_id) -> SurveyQuestion
+        finds the question with ID question_id and returns it
+        :param question_id: the ID of the question to find
+        :return: SurveyQuestion
+        :raises ValueError: if no question can be found
+        """
+        question = next(filter(lambda x: x.Element == 'SQ' and x.Payload.QuestionID == question_id,
+                               self.SurveyElements), None)
+
+        if question is None:
+            raise ValueError(f'Question {question_id} not found')
+
+        return question
+
+    def __xl__codebook(self):
 
         blocks = next(filter(lambda x: x.get('Element') == 'BL', self.SurveyElements))
         payload = blocks.Payload

@@ -4,6 +4,8 @@ import re
 
 class SurveyObjectBase(OrderedDict):
 
+    _TEXT_PIPE_RE = re.compile(r"[$][{]q://(?P<qid>QID[0-9]+)/(?P<property>[a-zA-Z]+)[}]")
+
     class AttributeNotFound(object):
         pass
 
@@ -11,6 +13,7 @@ class SurveyObjectBase(OrderedDict):
 
     def __init__(self, items, **kwargs):
         super().__init__(items, **kwargs)
+        self._survey = None
 
     def __getattr__(self, item):
 
@@ -23,12 +26,33 @@ class SurveyObjectBase(OrderedDict):
     def __setattr__(self, key, value):
 
         if key in self.keys():
-            raise AttributeError(f"Setting of attribute {key} not supported")
+            super(SurveyObjectBase, self)[key] = value
         else:
-            setattr(super(SurveyObjectBase, self), key, value)
+            object.__setattr__(self, key, value)
 
     def __str__(self):
         return "{\n" + "\n".join(f"{key}: {value}" for key, value in self.items()) + "\n}"
+
+    @property
+    def survey(self):
+        return self._survey
+
+    @survey.setter
+    def survey(self, value):
+        self._survey = value
+
+    def some_func(self, text_value):
+
+        pipe = self._TEXT_PIPE_RE.match(text_value)
+        if pipe is None:
+            result = text_value
+        else:
+            qid = pipe['qid']
+            property = pipe['property']
+            result = self.survey.get_question(qid)[property]
+
+
+        return result
 
     @staticmethod
     def _multi_replace_(txt, repl, ignore_case=False, whole_word_only=False):
@@ -105,6 +129,7 @@ class SurveyQuestion(SurveyObjectBase):
                           "None": None}
     CONTENT_TYPE = "ContentType"
 
+
     def __init__(self, items, **kwargs):
         super().__init__(items, **kwargs)
 
@@ -122,18 +147,12 @@ class SurveyQuestion(SurveyObjectBase):
 
         Each tuple contains the following information:
         QuestionID,
-        QuestionType,
-        Selector,
-        SubSelector (if any, otherwise None),
-        QuestionStem (Text of the question),
-        QuestionLeaf (For matrix-style questions, this is the text of the individual matrix item),
         Variable Name (The name as it would appear in an SPSS dataset)
         Variable label (The variable label as it would appear in an SPSS dataset)
         Value labels (Value labels as they would appear in an SPSS dataset)
-        Validation (Any validation data used by the question)
         :return: list[tuple]
         """
-        raise NotImplementedError("variable_info() not implemented for {0}".format(type(self)))
+        raise NotImplementedError(f"variable_info() not implemented for {type(self)}")
 
     def validation(self):
         settings: SurveyObjectBase = self.Payload.Validation.Settings

@@ -1,4 +1,4 @@
-from .abc import SurveyObjectBase, SurveyQuestion
+from .abc import SurveyQuestion
 
 __all__ = ['MatrixQuestion', 'MultiChoiceQuestion', 'RankOrderQuestion', 'SideBySideQuestion',
            'SliderQuestion', 'TextEntryQuestion']

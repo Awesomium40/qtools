@@ -17,5 +17,7 @@ def Survey(data):
     :return: Survey object
     """
     s = json.loads(data, cls=decoder.SurveyObjectDecoder)['result']
+    for se in s.SurveyElements:
+        se.survey = s
 
     return s

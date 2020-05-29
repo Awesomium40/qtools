@@ -70,3 +70,13 @@ class TestExportClient(unittest.TestCase):
         data.save('export.xlsx')
         d = 25
 
+    def test_survey(self):
+
+        ec = ExportClient()
+        data = ec.export_survey_definition(survey_id='SV_6llqAsI32tDsPSl', format=Format.TXT)
+        survey = qtools.qsf.Survey(data)
+
+        question = survey.get_question('QID44')
+
+        print(question.Payload.QuestionText)
+

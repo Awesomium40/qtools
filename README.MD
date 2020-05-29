@@ -20,12 +20,12 @@
 <p>qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>
 <code>&lt;path_to_qtools_folder&gt;/setup.py install</code>
 
-<p>Alternatively, you can download the latest precompiled wheel from the <b>dist</b> folder (currently version 0.5.1) and install via pip</p>
+<p>Alternatively, you can download the latest precompiled wheel from the <b>dist</b> folder (currently version 0.6.0) and install via pip</p>
 <code>python -m pip install &lt;path_to_wheel&gt;</code>
 
 <a id="usage"><h2>Usage</h2></a>
 <h3>Using the ExportClient class:</h3>
-<p>The <b>ExportClient</b> class allows interaction with (as of 0.5.1) the Qualtrics List Surveys and Get Survey APIs 
+<p>The <b>ExportClient</b> class allows interaction with (as of 0.6.0) the Qualtrics List Surveys and Get Survey APIs 
 to download and retrieve Survey response data. </p>
 <p>To use the ExportClient class:</p>
 
@@ -138,4 +138,7 @@ codebook.save("path_to_save")
     <li><i>survey_id</i>: The ID of the survey whose definition is to be exported</li>
     <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
 </ul>
-<p><i>export_codebook</i> returns an <a href="https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html">openpyxl.Workbook</a> object</p>
+<p><i>export_codebook</i> returns an <a href="https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html">openpyxl.Workbook</a> object.
+The resulting workbook will contain one worksheet for each block of the survey. 
+Each worksheet will contain descriptions of the <i>variables</i> exported into a dataset via the <a href="https://api.qualtrics.com/reference#create-response-export-new">Survey Response Exports API</a>,
+ including a variable's name, label, and value labels (if any).</p>

@@ -71,13 +71,11 @@ class _Survey(SurveyObjectBase):
                 question_id = q.QuestionID
                 question = next(filter(lambda x: x.Element == 'SQ' and x.Payload.QuestionID == question_id,
                                        self.SurveyElements))
-                if question_id in ('QID41', 'QID42'):
-                    x = 99
                 try:
                     for row in question.variable_info():
                         ws.append(row)
                 except Exception as err:
-                    print("Unable to insert data for question {0}. Error was \n{1}".format(question_id, err))
+                    print(f"Unable to insert data for question {question_id}. Error was \n{err}")
 
             # Make a table
             max_row = ws.max_row
@@ -95,7 +93,7 @@ class _Survey(SurveyObjectBase):
 
         return wb
 
-    def codebook(self, output_type='xlsx', var_info_only=True):
+    def codebook(self, output_type='xlsx'):
         """
 
         :param output_type:
@@ -104,6 +102,6 @@ class _Survey(SurveyObjectBase):
         """
 
         if output_type == 'xlsx':
-            return self.__xl__codebook(var_info_only=var_info_only)
+            return self.__xl__codebook()
         else:
             raise NotImplementedError("The output type '{0}' is not currently supported".format(output_type))

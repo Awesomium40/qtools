@@ -152,7 +152,7 @@ class SurveyQuestion(SurveyObjectBase):
         Value labels (Value labels as they would appear in an SPSS dataset)
         :return: list[tuple]
         """
-        raise NotImplementedError(f"variable_info() not implemented for {type(self)}")
+        raise NotImplementedError(f"variable_info() not implemented for question of type {self.Payload.QuestionType}")
 
     def validation(self):
         settings: SurveyObjectBase = self.Payload.Validation.Settings

@@ -226,7 +226,7 @@ class ExportClient(object):
         :return: openpyxl.Workbook
         """
 
-        survey_id = self._locate_survey_id_(survey_id=survey_id, locator=locator)
+        survey_id = self._locate_survey_id_(locator=locator) if survey_id is None else survey_id
 
         data = self.export_survey_definition(survey_id=survey_id, locator=locator, format=constants.Format.TXT)
         survey = qsf.Survey(data)

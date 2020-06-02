@@ -100,7 +100,6 @@ ec.export_responses(out_path="path_to_save", survey_id="qualtrics_id", file_form
     Format.XML<br></li>
     <li><i>report_progress</i>: Specifies whether to report the progress of the export download. Default True</li>
     <li><i>update_every</i>: Specifies how often (in seconds) to check the progress of export downloads. Default 0.5</li>
-    <li><i>survey_locator</i>: Callable which returns a survey ID if survey_id is not specified. Optional</li>
 </ul>
 
 <p>export_responses also accepts a variety of keyword arguments as allowed by the Export API 

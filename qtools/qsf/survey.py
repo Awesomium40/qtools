@@ -58,7 +58,7 @@ class _Survey(SurveyObjectBase):
         for i, block in enumerate(block_items):
             ws = wb.active if i == 0 else wb.create_sheet()
             title = self._sanitize_for_spss_(block.Description)
-            title = title if len(title) < 32 else title[:31]
+            title = title if len(title) < 31 else title[:30]
             ws.title = title
             for key, value in self.WIDTHS.items():
                 ws.column_dimensions[key].width = value

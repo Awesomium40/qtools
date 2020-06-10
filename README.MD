@@ -89,7 +89,7 @@ ec.export_responses(out_path="path_to_save", survey_id="qualtrics_id", file_form
 <ul>
     <li><i>out_path</i>: The path at which exported responses should be saved</li>
     <li><i>survey_id</i>: The qualtrics ID of the survey whose responses are to be exported.</li>
-    <li><i>locator</i>: A callable which returns the ID of the survey to be exported if survey_id is not specified.
+    <li><i>locator</i>: A callable which returns the ID of the survey to be exported. Specify this argument if survey_id is not provided.
     Note that failure to specify both survey_id and locator will cause a prompt for users to input a survey ID</li>
     <li><i>file_format</i>: Specifies the file format to be downloaded. Accepts the following values from the <b>constants</b> module:<br>
     Format.CSV,<br>
@@ -121,7 +121,7 @@ survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSO
 <p>The <i>export_survey_definition</i> method accepts the following arguments:</p>
 <ul>
     <li><i>survey_id</i>: The ID of the survey whose definition is to be exported</li>
-    <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
+    <li><i>locator</i>: A callable which returns the ID of the survey to be exported. Specify this argument if survey_id is not specified</li>
     <li><i>format</i>: The format of the data. Format.JSON for JSON data or format.TXT for text. Default Format.JSON</li>
 </ul>
 <p><i>export_survey_definition</i> returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
@@ -137,7 +137,7 @@ codebook.save("path_to_save")
 <p>The <i>export_codebook</i> method accepts the following arguments:</p>
 <ul>
     <li><i>survey_id</i>: The ID of the survey whose definition is to be exported</li>
-    <li><i>locator</i>: A callable which returns the ID of the survey to be exported, if survey_id is not specified</li>
+    <li><i>locator</i>: A callable which returns the ID of the survey to be exported. Specify this argument if survey_id is not specified</li>
 </ul>
 <p><i>export_codebook</i> returns an <a href="https://openpyxl.readthedocs.io/en/stable/api/openpyxl.workbook.workbook.html">openpyxl.Workbook</a> object.
 The resulting workbook will contain one worksheet for each block of the survey. 

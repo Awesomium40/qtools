@@ -79,7 +79,7 @@ class _Survey(SurveyObjectBase):
 
             # Make a table
             max_row = ws.max_row
-            if max_row > 1:
+            if max_row > 2:
                 tbl = Table(displayName=title, ref="A1:D{0}".format(max_row))
                 tbl.tableStyleInfo = self.TBL_STYLE
                 ws.add_table(tbl)

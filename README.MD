@@ -17,11 +17,11 @@
 
 
 <a id="installation"><h2>Installation</h2></a>
-<p>qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>
+<p>The preferred installation method is to download the latest precompiled binary (currently 0.6.5) from the 
+<a href="https://github.com/JayWaWa/qtools/tree/master/dist">dist</a> folder and install via pip:</p>
+<p><code>pip install /path/to/file</code></p>
+<p>Alternatively, qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>
 <code>&lt;path_to_qtools_folder&gt;/setup.py install</code>
-
-<p>Alternatively, you can download the latest precompiled wheel from the <b>dist</b> folder (currently version 0.6.5) and install via pip</p>
-<code>python -m pip install &lt;path_to_wheel&gt;</code>
 
 <a id="usage"><h2>Usage</h2></a>
 <h3>Using the ExportClient class:</h3>
@@ -110,6 +110,7 @@ for more details on these)</p>
 <h3>Exporting Survey Definitions and Data Dictionaries/Codebooks</h3>
 <p>Survey definition data and codebooks can be downloaded with the  <i>export_survey_definition</i> and <i>export_codebook</i> methods, respectively:</p>
 
+<h4>Exporting a Survey Definintion</h4>
 ```python
 from qtools import *
 
@@ -125,6 +126,7 @@ survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSO
 </ul>
 <p><i>export_survey_definition</i> returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
 
+<h4>Exporting a codebook/data dictionary</h4>
 ```python
 from qtools import *
 ec = ExportClient()

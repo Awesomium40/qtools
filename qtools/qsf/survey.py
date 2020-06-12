@@ -78,11 +78,13 @@ class _Survey(SurveyObjectBase):
                     print(f"Unable to insert data for question {question_id}. Error was \n{err}")
 
             # Make a table
+            """
             max_row = ws.max_row
             if max_row > 2:
-                tbl = Table(displayName=title, ref="A1:D{0}".format(max_row))
+                tbl = Table(displayName=title, ref=f"A1:D{max_row}")
                 tbl.tableStyleInfo = self.TBL_STYLE
                 ws.add_table(tbl)
+            """
 
             # Styles have to be set on cells one at a time or they won't take
             for row_index, row in enumerate(ws.iter_rows(), 1):

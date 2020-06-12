@@ -81,13 +81,13 @@ surveys = ec.get_survey_list()
 ```python
 from qtools import *
 ec = ExportClient()
-ec.export_responses(out_path="path_to_save", survey_id="qualtrics_id", file_format=Format.SPSS, 
+ec.export_responses(out_folder="path_to_save", survey_id="qualtrics_id", file_format=Format.SPSS, 
                     report_progress=True, update_every=0.5, **kwargs)
 ```
 
 <p><i>export_responses</i> accepts the following arguments:</p>
 <ul>
-    <li><i>out_path</i>: The path at which exported responses should be saved</li>
+    <li><i>out_folder</i>: The absolute folder in which exported responses should be saved</li>
     <li><i>survey_id</i>: The qualtrics ID of the survey whose responses are to be exported.</li>
     <li><i>locator</i>: A callable which returns the ID of the survey to be exported. Specify this argument if survey_id is not provided.
     Note that failure to specify both survey_id and locator will cause a prompt for users to input a survey ID</li>

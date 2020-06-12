@@ -32,10 +32,10 @@ class TestExportClient(unittest.TestCase):
 
         # Note that in order for this test to work, need to insert your own data_center and token values
         ec = ExportClient()
-        ec.export_responses(out_path=r'ResponseTest', survey_id='SV_2spdxBjZ6m0xQsl', limit=1,
+        ec.export_responses(out_folder=r'ResponseTest', survey_id='SV_2spdxBjZ6m0xQsl', limit=1,
                             questionIds=["QID52", "QID1"], useLabels=True)
 
-        ec.export_responses(out_path='ResponseTest2', limit=1, questionIds=["QID52", "QID1"], useLabels=True)
+        ec.export_responses(out_folder='ResponseTest2', limit=1, questionIds=["QID52", "QID1"], useLabels=True)
 
     def test_list_surveys(self):
         # Need to test with your own surveys

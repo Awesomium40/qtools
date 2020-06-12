@@ -232,19 +232,19 @@ class ExportClient(object):
         survey = qsf.Survey(data)
         return survey.codebook()
 
-    def export_responses(self, out_path, survey_id=None, file_format=constants.Format.SPSS, report_progress=True,
+    def export_responses(self, out_folder, survey_id=None, file_format=constants.Format.SPSS, report_progress=True,
                          update_every=0.5, **kwargs):
         """
         ec.export_responses(self, out_path, survey_id, file_format=constants.Format.SPSS, report_progress=True,
                             update_every=0.5, **kwargs) -> None
-        :param out_path: path to the folder in which response data is to be saved
+        :param out_folder: path to the folder in which response data is to be saved
         :param survey_id: string specifying the qualtrics ID of the survey to be exported.
         If no survey id is specified, user will be prompted with a list of survey ids
         :param file_format: constants.Format specifying the file format for the result export
         :param report_progress: Whether to display the progress of the export. Default True
         :param update_every: How often to check progress of export (in seconds). Default 0.5
-        :param locator: Callable which returns the survey ID of the survey whose responses are to be exported
-        if survey_id is not specified. Optional.
+        :param locator: kwarg Callable which returns the survey ID of the survey whose responses are to be exported
+        (or None if no survey ID can be located) if survey_id is not specified. Optional.
         :param startDate: DateTime or ISO-8601 datetime string in UTC time.
         Only export responses recorded after this date. Optional. Omit to export all responses
         :param endDate: DateTime or ISO-8601 datetime string. Only export responses recorded prior to this date.
@@ -269,6 +269,7 @@ class ExportClient(object):
         :param allowContinuation: Boolean. Set True in order to request a continuation token when export finished
         :param continuationToken: String continuation token used to get new responses recorded since last export
         :return: None
+        :raises exceptions.ExportException if the request for download does not return OK status
         """
 
         # If no survey specified, either use the provided callable to retrieve survey ID
@@ -292,7 +293,7 @@ class ExportClient(object):
         response = requests.post(base_url, json=body, headers=headers)
 
         if not response.ok:
-            raise exceptions.ExportException("Export Error", response.reason)
+            raise exceptions.ExportException("Export Error. Check err.Reason for details", response.reason)
 
         dl_response = response.json()
 
@@ -307,7 +308,7 @@ class ExportClient(object):
         dl_url = base_url + file_id + r'/file'
         download = requests.get(dl_url, headers=headers, stream=True)
 
-        zipfile.ZipFile(io.BytesIO(download.content)).extractall(out_path)
+        zipfile.ZipFile(io.BytesIO(download.content)).extractall(out_folder)
 
     def export_survey_definition(self, survey_id=None, locator=None, format=constants.Format.JSON):
         """

@@ -2,13 +2,13 @@
 
 class ExportException(Exception):
 
-    def __init__(self, msg, result):
+    def __init__(self, msg, reason):
         super().__init__(msg)
-        self._result = result
+        self._reason = reason
 
     @property
-    def result(self):
-        return self._result
+    def reason(self):
+        return self._reason
 
 
 class JsonException(Exception):

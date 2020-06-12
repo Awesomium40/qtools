@@ -9,7 +9,7 @@ setuptools.setup(
     version="0.6.7",
     author="Jay Walthers",
     author_email="justin_walthers@brown.edu",
-    description="A package for managing and analyzing Interview data at CAAS",
+    description="A Package with which to interface with the Qualtrics web API",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/JayWaWa/qtools",

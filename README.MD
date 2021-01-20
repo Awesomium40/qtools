@@ -113,7 +113,7 @@ for more details on these)</p>
 <h4>Exporting a Survey Definintion</h4>
 ```python
 from qtools import *
-ec = ExportClient
+ec = ExportClient()
 survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSON)
 ```
 

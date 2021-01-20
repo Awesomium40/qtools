@@ -17,7 +17,7 @@
 
 
 <a id="installation"><h2>Installation</h2></a>
-<p>The preferred installation method is to download the latest precompiled binary (currently 0.6.5) from the 
+<p>The preferred installation method is to download the latest precompiled binary (currently 0.6.7) from the 
 <a href="https://github.com/JayWaWa/qtools/tree/master/dist">dist</a> folder and install via pip:</p>
 <p><code>pip install /path/to/file</code></p>
 <p>Alternatively, qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>
@@ -25,7 +25,7 @@
 
 <a id="usage"><h2>Usage</h2></a>
 <h3>Using the ExportClient class:</h3>
-<p>The <b>ExportClient</b> class allows interaction with (as of 0.6.5) the <i>Survey Response Exports</i> and <i>Survey Definitions</i> APIs 
+<p>The <b>ExportClient</b> class allows interaction with (as of 0.6.7) the <i>Survey Response Exports</i> and <i>Survey Definitions</i> APIs 
 to download and retrieve Survey response data. </p>
 <p>To use the ExportClient class:</p>
 

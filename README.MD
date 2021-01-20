@@ -111,6 +111,7 @@ for more details on these)</p>
 <p>Survey definition data and codebooks can be downloaded with the  <i>export_survey_definition</i> and <i>export_codebook</i> methods, respectively:</p>
 
 <h4>Exporting a Survey Definintion</h4>
+
 ```python
 from qtools import *
 ec = ExportClient()
@@ -130,8 +131,7 @@ survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSO
 ```python
 from qtools import *
 ec = ExportClient()
-ec.export_responses(out_folder="path_to_save", survey_id="qualtrics_id", file_format=Format.SPSS, 
-                    report_progress=True, update_every=0.5, **kwargs)
+wb = ec.export_codebook(survey_id="qualtrics_id" [locator=l])
 ```
 
 <p>The <i>export_codebook</i> method accepts the following arguments:</p>

@@ -126,11 +126,12 @@ survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSO
 <p><i>export_survey_definition</i> returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
 
 <h4>Exporting a codebook/data dictionary</h4>
+
 ```python
 from qtools import *
 ec = ExportClient()
-codebook = ec.export_codebook(survey_id='surveyID')  # type: openpyxl.Workbook
-codebook.save("path_to_save")
+ec.export_responses(out_folder="path_to_save", survey_id="qualtrics_id", file_format=Format.SPSS, 
+                    report_progress=True, update_every=0.5, **kwargs)
 ```
 
 <p>The <i>export_codebook</i> method accepts the following arguments:</p>

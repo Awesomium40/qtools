@@ -57,10 +57,10 @@ class _Survey(SurveyObjectBase):
         wb = openpyxl.Workbook()
 
         for i, block in enumerate(block_items):
+            title = self._sanitize_for_spss_(block.Description)
+            title = title if len(title) < 31 else title[:30]
             if blocks_as_sheets:
                 ws = wb.active if i == 0 else wb.create_sheet()
-                title = self._sanitize_for_spss_(block.Description)
-                title = title if len(title) < 31 else title[:30]
                 ws.title = title
             else:
                 ws = wb.active
@@ -77,7 +77,7 @@ class _Survey(SurveyObjectBase):
                                        self.SurveyElements))
                 try:
                     for row in question.variable_info():
-                        ws.append(row)
+                        ws.append([title] + row)
                 except Exception as err:
                     print(f"Unable to insert data for question {question_id}. Error was \n{err}")
 
@@ -99,15 +99,12 @@ class _Survey(SurveyObjectBase):
 
         return wb
 
-    def codebook(self, output_type='xlsx'):
+    def codebook(self, blocks_as_sheets=True):
         """
 
         :param output_type:
         :param var_info_only:
         :return:
         """
+        return self.__xl__codebook(blocks_as_sheets=blocks_as_sheets)
 
-        if output_type == 'xlsx':
-            return self.__xl__codebook()
-        else:
-            raise NotImplementedError("The output type '{0}' is not currently supported".format(output_type))

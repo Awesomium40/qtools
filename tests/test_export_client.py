@@ -22,7 +22,6 @@ class TestExportClient(unittest.TestCase):
 
         # test that ExportClient correctly gets vars when specified as values.
         # Insert your own values here to test and remove return statement
-        return
         ec = ExportClient(data_center='', token='')
         self.assertEqual(os.environ.get('Q_API_TOKEN'), qtools.security.decrypt(ec._token, ec._tkn_salt, ec._pass))
         self.assertEqual(os.environ.get('Q_DATA_CENTER'),
@@ -32,8 +31,7 @@ class TestExportClient(unittest.TestCase):
 
         # Note that in order for this test to work, need to insert your own data_center and token values
         ec = ExportClient()
-        ec.export_responses(out_folder=r'ResponseTest', survey_id='SV_2spdxBjZ6m0xQsl', limit=1,
-                            questionIds=["QID52", "QID1"], useLabels=True)
+        ec.export_responses(out_folder=r'ResponseTest', survey_id='SV_0wiQvxuFUDgqWWh')
 
         ec.export_responses(out_folder='ResponseTest2', limit=1, questionIds=["QID52", "QID1"], useLabels=True)
 

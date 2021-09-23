@@ -67,7 +67,7 @@ class ExportClient(object):
             f".qualtrics.com/API/v3/"
 
     @staticmethod
-    def _await_export_(url, headers, report_progress=True, update_every=0.5):
+    def _await_export_(url, headers, survey_name=None, report_progress=True, update_every=0.5):
         """
         ec._await_export_(url, headers, report_progress=True) -> str
         :param url: the qualtrics request check URL for the survey responses export
@@ -78,13 +78,14 @@ class ExportClient(object):
         """
 
         status = None
+        prefix = f"Exporting {survey_name}: " if survey_name is not None else 'Export Progress: '
         # Periodically check the update of the export
         while status not in ('complete', 'failed'):
             response = requests.get(url, headers=headers)
             response_json = response.json()
             progress = response_json['result']['percentComplete']
             if report_progress:
-                utils._progress_bar_(progress, 100, prefix='Export Progress: ')
+                utils._progress_bar_(progress, 100, prefix=prefix)
             status = response_json['result']['status']
             time.sleep(update_every)
 
@@ -276,6 +277,7 @@ class ExportClient(object):
         # or present user with a prompt that allows to choose from available surveys to export
         locator = kwargs.get('locator', self._prompt_for_survey_)
         survey_id = self._locate_survey_id_(locator=locator) if survey_id is None else survey_id
+        survey_name = self.get_survey_list().get(survey_id)
 
         if survey_id is None:
             logging.info("No survey ID specified. Aborting...")

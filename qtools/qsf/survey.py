@@ -7,12 +7,13 @@ import openpyxl
 
 class _Survey(SurveyObjectBase):
 
-    COL_HEADERS = ["QuestionID", 'Variable Name', "Variable Label", "Value Labels"]
-    WIDTHS = {"A": 10.3, "B": 21.5, "C": 44.3, "D": 27.9}
+    COL_HEADERS = ["Block", "QuestionID", 'Variable Name', "Variable Label", "Value Labels"]
+    WIDTHS = {"A": 10.3, "B": 10.3, "C": 21.5, "D": 44.3, "E": 27.9}
     ALIGNMENTS = {"A": openpyxl.styles.Alignment(),
                   "B": openpyxl.styles.Alignment(),
-                  "C": openpyxl.styles.Alignment(wrapText=True),
-                  "D": openpyxl.styles.Alignment(wrapText=True)}
+                  "C": openpyxl.styles.Alignment(),
+                  "D": openpyxl.styles.Alignment(wrapText=True),
+                  "E": openpyxl.styles.Alignment(wrapText=True)}
 
     TBL_STYLE = TableStyleInfo(name="TableStyleMedium8",
                                showRowStripes=True)
@@ -43,7 +44,7 @@ class _Survey(SurveyObjectBase):
 
         return question
 
-    def __xl__codebook(self):
+    def __xl__codebook(self, blocks_as_sheets=True):
 
         blocks = next(filter(lambda x: x.get('Element') == 'BL', self.SurveyElements))
         payload = blocks.Payload
@@ -56,10 +57,13 @@ class _Survey(SurveyObjectBase):
         wb = openpyxl.Workbook()
 
         for i, block in enumerate(block_items):
-            ws = wb.active if i == 0 else wb.create_sheet()
-            title = self._sanitize_for_spss_(block.Description)
-            title = title if len(title) < 31 else title[:30]
-            ws.title = title
+            if blocks_as_sheets:
+                ws = wb.active if i == 0 else wb.create_sheet()
+                title = self._sanitize_for_spss_(block.Description)
+                title = title if len(title) < 31 else title[:30]
+                ws.title = title
+            else:
+                ws = wb.active
             for key, value in self.WIDTHS.items():
                 ws.column_dimensions[key].width = value
 

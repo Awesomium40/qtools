@@ -43,7 +43,7 @@ class MatrixQuestion(SurveyQuestion):
                     var_label = f"{stem} - {choices[key].Display} {vl_leaf}"
                     value_labels = {1:  var_naming[a_key] if var_naming is not None else answers[key].Display}
 
-                    rows.append((qid, var_name, var_label, str(value_labels),))
+                    rows.append([qid, var_name, var_label, str(value_labels)])
 
             else:
                 base = data_export_tags[key] if data_export_tags else f"{var_name_base}_{key}"
@@ -53,13 +53,13 @@ class MatrixQuestion(SurveyQuestion):
                 value_labels = {recode_values[a_key] if recode_values is not None else a_key:
                                 var_naming[a_key] if var_naming is not None else answers[a_key].Display
                                 for a_key in ans_order}
-                rows.append((qid, var_name, var_label, str(value_labels),))
+                rows.append([qid, var_name, var_label, str(value_labels)])
 
                 if self.choice_has_text_entry(choices[key]):
-                    rows.append((qid, f'{var_name}_TEXT', f'{var_label} - Text', None,))
+                    rows.append([qid, f'{var_name}_TEXT', f'{var_label} - Text', None])
 
             if self.choice_has_text_entry(choices[key]):
-                rows.append((qid, f'{base}_TEXT', f"{stem} - {choices[key].Display} - Text", None,))
+                rows.append([qid, f'{base}_TEXT', f"{stem} - {choices[key].Display} - Text", None])
 
         return rows
 
@@ -107,12 +107,12 @@ class MultiChoiceQuestion(SurveyQuestion):
                 value_labels = {1: leaf}
                 var_label = f"{self.Payload.QuestionDescription} {leaf}"
                 var_name = self._variable_name_(choice_id)
-                rows.append((qid, var_name, var_label, str(value_labels), None,))
+                rows.append([qid, var_name, var_label, str(value_labels), None])
 
                 # If a choice also allows Text entry, there should be an additional variable for the contents
                 # of the text entry
                 if choices[choice_id].get("TextEntry") in (True, "true"):
-                    rows.append((qid, f'{var_name}_Text', f'{var_label} - Text', None,))
+                    rows.append([qid, f'{var_name}_Text', f'{var_label} - Text', None])
 
         else:
             var_name = self._variable_name_()
@@ -121,13 +121,13 @@ class MultiChoiceQuestion(SurveyQuestion):
                             for key in choice_order}
 
             var_label = self.Payload.QuestionDescription
-            rows.append((qid, var_name, var_label, str(value_labels),))
+            rows.append([qid, var_name, var_label, str(value_labels)])
 
             # Some choices may have TextEntry attached to them. For those choices, add additional variables
             # for the contents of text entry
             for choice in filter(lambda x: choices[x].get("TextEntry") in (True, "true"), choice_order):
                 vn_recode = str(choice) if recode_values is None else recode_values[choice]
-                rows.append(tuple((qid, f"{var_name}_{vn_recode}_Text", f'{var_label} - Text', None)))
+                rows.append([qid, f"{var_name}_{vn_recode}_Text", f'{var_label} - Text', None])
 
         return rows
 
@@ -146,8 +146,8 @@ class RankOrderQuestion(SurveyQuestion):
         value_labels = "{" + "\n".join(f'{key}: {key}' for key in self.Payload.Choices) + "}"
 
         for key in choice_order:
-            rows.append((self.Payload.QuestionID, f'{self.Payload.DataExportTag}_{recodes[key]}',
-                         f'{self.Payload.QuestionDescription} - {choices[key].Display}', value_labels,))
+            rows.append([self.Payload.QuestionID, f'{self.Payload.DataExportTag}_{recodes[key]}',
+                         f'{self.Payload.QuestionDescription} - {choices[key].Display}', value_labels])
 
         return rows
 
@@ -226,7 +226,7 @@ class SideBySideQuestion(SurveyQuestion):
                         var_name = self._variable_name_(aq_id, aq_data, choice_id, answer_value=answer_value)
                         var_label = self._variable_label_(aq_data, choice_id, answer_id=answer_id)
                         value_labels = self._value_labels_(aq_data, answer_id=answer_id)
-                        rows.append((self.Payload.QuestionID, var_name, var_label, value_labels,))
+                        rows.append([self.Payload.QuestionID, var_name, var_label, value_labels])
 
                         # Some statements may have a Text entry option, which yields an additional variable
                         if choice_has_text_entry:
@@ -235,11 +235,11 @@ class SideBySideQuestion(SurveyQuestion):
                     var_name = self._variable_name_(aq_id, aq_data, choice_id)
                     var_label = self._variable_label_(aq_data, choice_id)
                     value_labels = self._value_labels_(aq_data)
-                    rows.append((self.Payload.QuestionID, var_name, var_label, value_labels,))
+                    rows.append([self.Payload.QuestionID, var_name, var_label, value_labels])
 
                     # Some statements may have a Text entry option, which yields an additional variable
                     if choice_has_text_entry:
-                        rows.append((self.Payload.QuestionID, f'{var_name}_TEXT', f'{var_label} - Text', None))
+                        rows.append([self.Payload.QuestionID, f'{var_name}_TEXT', f'{var_label} - Text', None])
         return rows
 
 
@@ -256,7 +256,7 @@ class SliderQuestion(SurveyQuestion):
         for key in choice_order:
             var_name = self._sanitize_for_spss_(f'{self.Payload.DataExportTag}_{str(key)}')
             var_label = f'{self.Payload.QuestionDescription} - {choices[key].Display}'
-            rows.append((self.Payload.QuestionID, var_name, var_label, None))
+            rows.append([self.Payload.QuestionID, var_name, var_label, None])
 
         return rows
 
@@ -268,6 +268,6 @@ class TextEntryQuestion(SurveyQuestion):
 
     def variable_info(self):
 
-        rows = [(self.Payload.QuestionID, self.Payload.DataExportTag, self.Payload.QuestionDescription, None,)]
+        rows = [[self.Payload.QuestionID, self.Payload.DataExportTag, self.Payload.QuestionDescription, None]]
 
         return rows

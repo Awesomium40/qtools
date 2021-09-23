@@ -17,7 +17,7 @@
 
 
 <a id="installation"><h2>Installation</h2></a>
-<p>The preferred installation method is to download the latest precompiled binary (currently 0.6.5) from the 
+<p>The preferred installation method is to download the latest precompiled binary (currently 0.6.7) from the 
 <a href="https://github.com/JayWaWa/qtools/tree/master/dist">dist</a> folder and install via pip:</p>
 <p><code>pip install /path/to/file</code></p>
 <p>Alternatively, qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>
@@ -25,7 +25,7 @@
 
 <a id="usage"><h2>Usage</h2></a>
 <h3>Using the ExportClient class:</h3>
-<p>The <b>ExportClient</b> class allows interaction with (as of 0.6.5) the <i>Survey Response Exports</i> and <i>Survey Definitions</i> APIs 
+<p>The <b>ExportClient</b> class allows interaction with (as of 0.6.7) the <i>Survey Response Exports</i> and <i>Survey Definitions</i> APIs 
 to download and retrieve Survey response data. </p>
 <p>To use the ExportClient class:</p>
 
@@ -111,10 +111,10 @@ for more details on these)</p>
 <p>Survey definition data and codebooks can be downloaded with the  <i>export_survey_definition</i> and <i>export_codebook</i> methods, respectively:</p>
 
 <h4>Exporting a Survey Definintion</h4>
+
 ```python
 from qtools import *
-
-ec = ExportClient
+ec = ExportClient()
 survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSON)
 ```
 
@@ -127,11 +127,11 @@ survey_def = ec.export_survey_definition(survey_id='surveyID', format=Format.JSO
 <p><i>export_survey_definition</i> returns either a JSON object or text (which can be converted to JSON), depending on the value provided to format</p>
 
 <h4>Exporting a codebook/data dictionary</h4>
+
 ```python
 from qtools import *
 ec = ExportClient()
-codebook = ec.export_codebook(survey_id='surveyID')  # type: openpyxl.Workbook
-codebook.save("path_to_save")
+wb = ec.export_codebook(survey_id="qualtrics_id" [locator=l])
 ```
 
 <p>The <i>export_codebook</i> method accepts the following arguments:</p>

@@ -64,8 +64,8 @@ class TestExportClient(unittest.TestCase):
     def test_export_codebook(self):
         ec = ExportClient()
 
-        data = ec.export_codebook(survey_id='SV_6llqAsI32tDsPSl')
-        data.save('export.xlsx')
+        data = ec.export_codebook(survey_id='SV_eeobi8v56cBorD7')
+        data.save('d:\export.xlsx')
         d = 25
 
     def test_survey(self):

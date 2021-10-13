@@ -43,7 +43,7 @@ class MatrixQuestion(SurveyQuestion):
                     var_label = f"{stem} - {choices[key].Display} {vl_leaf}"
                     value_labels = {1:  var_naming[a_key] if var_naming is not None else answers[key].Display}
 
-                    rows.append([qid, var_name, var_label, str(value_labels)])
+                    rows.append([qid, var_name, var_label, value_labels])
 
             else:
                 base = data_export_tags[key] if data_export_tags else f"{var_name_base}_{key}"
@@ -53,7 +53,7 @@ class MatrixQuestion(SurveyQuestion):
                 value_labels = {recode_values[a_key] if recode_values is not None else a_key:
                                 var_naming[a_key] if var_naming is not None else answers[a_key].Display
                                 for a_key in ans_order}
-                rows.append([qid, var_name, var_label, str(value_labels)])
+                rows.append([qid, var_name, var_label, value_labels])
 
                 if self.choice_has_text_entry(choices[key]):
                     rows.append([qid, f'{var_name}_TEXT', f'{var_label} - Text', None])
@@ -107,7 +107,7 @@ class MultiChoiceQuestion(SurveyQuestion):
                 value_labels = {1: leaf}
                 var_label = f"{self.Payload.QuestionDescription} {leaf}"
                 var_name = self._variable_name_(choice_id)
-                rows.append([qid, var_name, var_label, str(value_labels), None])
+                rows.append([qid, var_name, var_label, value_labels])
 
                 # If a choice also allows Text entry, there should be an additional variable for the contents
                 # of the text entry
@@ -121,7 +121,7 @@ class MultiChoiceQuestion(SurveyQuestion):
                             for key in choice_order}
 
             var_label = self.Payload.QuestionDescription
-            rows.append([qid, var_name, var_label, str(value_labels)])
+            rows.append([qid, var_name, var_label, value_labels])
 
             # Some choices may have TextEntry attached to them. For those choices, add additional variables
             # for the contents of text entry
@@ -143,7 +143,8 @@ class RankOrderQuestion(SurveyQuestion):
         choice_order = self.Payload.ChoiceOrder
         recodes = self.Payload.get('RecodeValues') if self.Payload.get('RecodeValues') is not None else \
             {key: key for key in self.Payload.Choices}
-        value_labels = "{" + "\n".join(f'{key}: {key}' for key in self.Payload.Choices) + "}"
+        value_labels = {key: key for key in self.Payload.Choices}
+        #value_labels = "{" + "\n".join(f'{key}: {key}' for key in self.Payload.Choices) + "}"
 
         for key in choice_order:
             rows.append([self.Payload.QuestionID, f'{self.Payload.DataExportTag}_{recodes[key]}',
@@ -197,8 +198,9 @@ class SideBySideQuestion(SurveyQuestion):
         else:
             value_labels = {key: value.Display for key, value in additional_question.Answers.items()}
 
-        return "{\n" + "\n".join(f"{key}: {value}" for key, value in value_labels.items()) + "\n}" \
-            if value_labels is not None else value_labels
+        return value_labels
+        #return "{\n" + "\n".join(f"{key}: {value}" for key, value in value_labels.items()) + "\n}" \
+        #    if value_labels is not None else value_labels
 
     def variable_info(self):
 

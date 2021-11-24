@@ -18,7 +18,7 @@
 
 
 <a id="installation"><h2>Installation</h2></a>
-<p>The preferred installation method is to download the latest precompiled binary (currently 0.7.7) from the 
+<p>The preferred installation method is to download the latest precompiled binary (currently 0.7.8) from the 
 <a href="https://github.com/JayWaWa/qtools/tree/master/dist">dist</a> folder and install via pip:</p>
 <p><code>pip install /path/to/file</code></p>
 <p>Alternatively, qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>

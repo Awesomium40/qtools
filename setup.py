@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
 
 setuptools.setup(
     name="qtools",
-    version="0.7.7",
+    version="0.7.8",
     author="Jay Walthers",
     author_email="justin_walthers@brown.edu",
     description="A Package with which to interface with the Qualtrics web API",

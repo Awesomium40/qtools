@@ -49,7 +49,7 @@ class ExportClient(object):
             dc = os.environ.get(_QDC)
             if dc is None: dc = getpass.getpass("Please enter your Qualtrics data center: ")
 
-        if token is None:
+        if token is not None:
             tkn = os.environ.get(token)
             if tkn is None: tkn = token
         else:

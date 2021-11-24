@@ -82,7 +82,8 @@ class _Survey(SurveyObjectBase):
                         # info in merged cells occupying the same number of rows pre-merge
                         if row[3] is not None:
                             start_row = ws.max_row + 1
-                            for i, (key, value) in enumerate(sorted(row[3].items())):
+                            vl = {int(key): value for key, value in row[3].items()}
+                            for i, (key, value) in enumerate(sorted(vl.items())):
                                 ws.append([x.strip() for x in row[:3]] + [f'{key} = {value}'])
 
                             # Perform the merging on each individual cell so they are lined up with the val labels
@@ -91,6 +92,8 @@ class _Survey(SurveyObjectBase):
                         else:
                             ws.append(row)
                 except Exception as err:
+                    if question_id == 'QID757':
+                        pass
                     print(f"Unable to insert data for question {question_id}. Error was \n{err}")
 
             # Make a table

@@ -144,7 +144,6 @@ class RankOrderQuestion(SurveyQuestion):
         recodes = self.Payload.get('RecodeValues') if self.Payload.get('RecodeValues') is not None else \
             {key: key for key in self.Payload.Choices}
         value_labels = {key: key for key in self.Payload.Choices}
-        #value_labels = "{" + "\n".join(f'{key}: {key}' for key in self.Payload.Choices) + "}"
 
         for key in choice_order:
             rows.append([self.Payload.QuestionID, f'{self.Payload.DataExportTag}_{recodes[key]}',

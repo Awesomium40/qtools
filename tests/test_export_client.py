@@ -64,14 +64,14 @@ class TestExportClient(unittest.TestCase):
     def test_export_codebook(self):
         ec = ExportClient()
 
-        data = ec.export_codebook(survey_id='SV_eeobi8v56cBorD7')
+        data = ec.export_codebook(survey_id='SV_7ZJKWQhp7JjdhBP')
         data.save('d:\export.xlsx')
         d = 25
 
     def test_survey(self):
 
         ec = ExportClient()
-        data = ec.export_survey_definition(survey_id='SV_6llqAsI32tDsPSl', format=Format.TXT)
+        data = ec.export_survey_definition(survey_id='SV_bsHkUbeZBMt8l93', format=Format.TXT)
         survey = qtools.qsf.Survey(data)
 
         question = survey.get_question('QID44')

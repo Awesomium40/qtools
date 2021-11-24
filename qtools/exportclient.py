@@ -42,14 +42,19 @@ class ExportClient(object):
         ERR_BASE = ("parameter '{0}' was not specified and variable '{1}' was " +
                     "not found in environment variables. Please specify {0} or add {1} " +
                     "to your OS environment variables.")
+        if data_center is not None:
+            dc = os.environ.get(data_center)
+            dc = data_center
+        else:
+            dc = os.environ.get(_QDC)
+            if dc is None: dc = getpass.getpass("Please enter your Qualtrics data center: ")
 
-        dc = os.environ.get(data_center) if data_center is not None and os.environ.get(data_center) is not None else \
-            data_center if data_center is not None else os.environ.get(_QDC) if os.environ.get(_QDC) is not None else \
-            getpass.getpass("Please enter your Qualtrics data center: ")
-        tkn = os.environ.get(token) if token is not None and os.environ.get(token) is not None else \
-            token if token is not None else \
-            os.environ.get(_QAT) if os.environ.get(_QAT) is not None else \
-            getpass.getpass("Please enter your Qualtrics API token: ")
+        if token is None:
+            tkn = os.environ.get(token)
+            if tkn is None: tkn = token
+        else:
+            tkn = os.environ.get(_QAT)
+            if tkn is None: tkn = getpass.getpass("Please enter your Qualtrics API token: ")
 
         if tkn is None:
             raise ValueError(ERR_BASE.format('token', _QAT))

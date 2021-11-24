@@ -13,11 +13,12 @@
 <p>qtools requires python 3.6 or greater. Currently, it has the following dependencies:</p>
 <ul>
 <li><a href="https://openpyxl.readthedocs.io/en/stable/">openpyxl >= 2.6.3</a></li>
+<li><a href="https://pypi.org/project/dotted-dict/">dotted-dict >= 1.1</a></li>
 </ul>
 
 
 <a id="installation"><h2>Installation</h2></a>
-<p>The preferred installation method is to download the latest precompiled binary (currently 0.7.6) from the 
+<p>The preferred installation method is to download the latest precompiled binary (currently 0.7.7) from the 
 <a href="https://github.com/JayWaWa/qtools/tree/master/dist">dist</a> folder and install via pip:</p>
 <p><code>pip install /path/to/file</code></p>
 <p>Alternatively, qtools can be installed by cloning/downloading the repository and running the setup.py script with the install option</p>

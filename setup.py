@@ -6,14 +6,14 @@ with open(os.path.join(os.path.dirname(__file__), "README.md"), "r") as fh:
 
 setuptools.setup(
     name="qtools",
-    version="0.7.6",
+    version="0.7.7",
     author="Jay Walthers",
     author_email="justin_walthers@brown.edu",
     description="A Package with which to interface with the Qualtrics web API",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/JayWaWa/qtools",
-    install_requires=['openpyxl >= 2.6.3'],
+    install_requires=['openpyxl >= 2.6.3', 'dotted-dict >= 1.1'],
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[
